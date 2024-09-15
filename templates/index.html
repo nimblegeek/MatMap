@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-8 bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold mb-4">Welcome to Jiujitsu Open Mat Finder</h2>
+    <p class="text-gray-700">
+        Discover and book open mat sessions at various jiujitsu clubs in your area. 
+        Whether you're a beginner or an experienced practitioner, find the perfect 
+        training opportunity to enhance your skills and connect with fellow enthusiasts.
+    </p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for club in clubs %}
+    <div class="bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition-shadow duration-300" onclick="window.location.href='{{ url_for('club_details', club_id=club.id) }}'">
+        <h2 class="text-xl font-semibold mb-2">{{ club.name }}</h2>
+        <p class="text-gray-600 mb-2">{{ club.location }}</p>
+        <p class="text-gray-700">{{ club.description }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
