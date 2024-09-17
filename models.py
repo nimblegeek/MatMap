@@ -8,6 +8,7 @@ class Club(db.Model):
     name = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
+    organization_number = db.Column(db.String(9), nullable=False, unique=True)
     bookings = db.relationship('Booking', backref='club', lazy=True)
 
 class Booking(db.Model):

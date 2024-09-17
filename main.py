@@ -1,4 +1,5 @@
 import os
+import re
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import urlparse
@@ -58,13 +59,35 @@ def remove_duplicates():
     
     return jsonify({"message": "Duplicate entries removed"}), 200
 
+def is_valid_organization_number(org_number):
+    # Check if the organization number is 9 digits
+    if not re.match(r'^\d{9}$', org_number):
+        return False
+    
+    # Calculate the checksum
+    weights = [3, 2, 7, 6, 5, 4, 3, 2]
+    checksum = sum(int(digit) * weight for digit, weight in zip(org_number[:-1], weights))
+    remainder = checksum % 11
+    check_digit = (11 - remainder) % 11
+    
+    return int(org_number[-1]) == check_digit
+
 @app.route('/add_club', methods=['GET', 'POST'])
 def add_club():
     if request.method == 'POST':
         name = request.form['name']
         location = request.form['location']
         description = request.form['description']
-        new_club = Club(name=name, location=location, description=description)
+        organization_number = request.form['organization_number']
+
+        if not is_valid_organization_number(organization_number):
+            return render_template('add_club.html', error="Invalid organization number")
+
+        existing_club = Club.query.filter_by(organization_number=organization_number).first()
+        if existing_club:
+            return render_template('add_club.html', error="Organization number already exists")
+
+        new_club = Club(name=name, location=location, description=description, organization_number=organization_number)
         db.session.add(new_club)
         db.session.commit()
         return redirect(url_for('index'))
@@ -72,8 +95,9 @@ def add_club():
 
 def init_db():
     with app.app_context():
-        db.create_all()
-        print("Database tables created.")
+        db.drop_all()  # Drop all existing tables
+        db.create_all()  # Create all tables
+        print("Database tables dropped and recreated.")
 
 if __name__ == '__main__':
     init_db()
