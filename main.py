@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import urlparse
 from models import db, Club, Booking, OpenMatSession
+from sqlalchemy import func
 
 app = Flask(__name__)
 
@@ -16,7 +17,9 @@ db.init_app(app)
 
 @app.route('/')
 def index():
-    clubs = Club.query.distinct(Club.name).all()
+    clubs = Club.query.options(db.joinedload(Club.open_mat_sessions)).all()
+    for club in clubs:
+        club.open_mat_sessions.sort(key=lambda x: x.date)
     return render_template('index.html', clubs=clubs)
 
 @app.route('/club/<int:club_id>')

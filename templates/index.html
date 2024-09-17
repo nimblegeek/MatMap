@@ -15,7 +15,20 @@
     <div class="bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition-shadow duration-300" onclick="window.location.href='{{ url_for('club_details', club_id=club.id) }}'">
         <h2 class="text-xl font-semibold mb-2">{{ club.name }}</h2>
         <p class="text-gray-600 mb-2">{{ club.location }}</p>
-        <p class="text-gray-700">{{ club.description }}</p>
+        <p class="text-gray-700 mb-2">{{ club.description }}</p>
+        <p class="text-sm text-gray-500 mb-2">Organization Number: {{ club.organization_number }}</p>
+        {% if club.open_mat_sessions %}
+        <div class="mt-4">
+            <h3 class="text-lg font-semibold mb-2">Upcoming Open Mat Sessions:</h3>
+            <ul class="list-disc list-inside">
+                {% for session in club.open_mat_sessions[:3] %}
+                <li class="text-sm text-gray-600">
+                    {{ session.date.strftime('%Y-%m-%d') }} from {{ session.start_time.strftime('%I:%M %p') }} to {{ session.end_time.strftime('%I:%M %p') }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
     </div>
     {% endfor %}
 </div>
