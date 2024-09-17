@@ -10,6 +10,7 @@ class Club(db.Model):
     description = db.Column(db.Text, nullable=True)
     organization_number = db.Column(db.String(9), nullable=False, unique=True)
     bookings = db.relationship('Booking', backref='club', lazy=True)
+    open_mat_sessions = db.relationship('OpenMatSession', backref='club', lazy=True)
 
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -17,4 +18,14 @@ class Booking(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class OpenMatSession(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    club_id = db.Column(db.Integer, db.ForeignKey('club.id'), nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+    max_participants = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

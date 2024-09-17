@@ -3,7 +3,7 @@ import re
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import urlparse
-from models import db, Club, Booking
+from models import db, Club, Booking, OpenMatSession
 
 app = Flask(__name__)
 
