@@ -10,6 +10,33 @@
     </p>
 </div>
 
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold mb-2">Find Open Mats</h3>
+        <p class="text-gray-700">Easily discover open mat sessions near you with our comprehensive search feature.</p>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold mb-2">Book Sessions</h3>
+        <p class="text-gray-700">Reserve your spot at open mat sessions with just a few clicks.</p>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold mb-2">Connect with Practitioners</h3>
+        <p class="text-gray-700">Meet and train with fellow jiujitsu enthusiasts in your area.</p>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold mb-2">Improve Your Skills</h3>
+        <p class="text-gray-700">Enhance your techniques by training with a diverse group of practitioners.</p>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold mb-2">Flexible Schedule</h3>
+        <p class="text-gray-700">Find open mat sessions that fit your busy lifestyle.</p>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold mb-2">Host Your Open Mat</h3>
+        <p class="text-gray-700">Easily add and manage your own open mat sessions for others to join.</p>
+    </div>
+</div>
+
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for club in clubs %}
     <div class="bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition-shadow duration-300" onclick="window.location.href='{{ url_for('club_details', club_id=club.id) }}'">
