@@ -1,5 +1,6 @@
 import os
 import re
+import requests
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import urlparse
@@ -73,7 +74,25 @@ def is_valid_organization_number(org_number):
     remainder = checksum % 11
     check_digit = (11 - remainder) % 11
     
-    return int(org_number[-1]) == check_digit
+    if int(org_number[-1]) != check_digit:
+        return False
+
+    # External API check (commented out)
+    """
+    try:
+        response = requests.get(f"https://example-api.com/validate-org-number/{org_number}")
+        if response.status_code == 200:
+            return response.json().get('valid', False)
+        else:
+            # Log the error or handle it appropriately
+            print(f"Error validating organization number: {response.status_code}")
+    except requests.RequestException as e:
+        # Log the error or handle it appropriately
+        print(f"Error connecting to validation API: {str(e)}")
+    """
+
+    # For now, we'll return True if the checksum is valid
+    return True
 
 @app.route('/add_club', methods=['GET', 'POST'])
 def add_club():
